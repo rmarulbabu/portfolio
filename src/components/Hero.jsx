@@ -11,7 +11,7 @@ export default function Hero() {
   useEffect(() => {
     const onMove = (e) => {
       if (!glowRef.current) return;
-      glowRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0,212,255,0.18), transparent 60%)`;
+      glowRef.current.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0,212,255,0.12), transparent 60%)`;
     };
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
@@ -68,24 +68,41 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.9, delay: 0.2 }}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}
           className="lg:col-span-5 relative flex justify-center">
-          <div className="relative w-[280px] sm:w-[340px] lg:w-[380px] aspect-square">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#00D4FF] via-[#8A2BE2] to-[#00FF88] opacity-30 blur-3xl animate-pulse" />
-            <div className="absolute inset-0 rounded-full conic-border" style={{ borderRadius: "9999px" }} />
-            <div className="absolute inset-2 rounded-full overflow-hidden glass-strong">
-              <img src={PROFILE.photo} alt={PROFILE.name} className="w-full h-full object-cover" data-testid="hero-portrait" />
-            </div>
-            <motion.div animate={{ rotate: 360 }} transition={{ duration: 28, repeat: Infinity, ease: "linear" }} className="absolute inset-[-30px] rounded-full">
-              {["Python", "React", "FastAPI", "Mongo"].map((t, i) => (
-                <div key={t}
-                  className="absolute font-mono text-[10px] tracking-widest text-[#00D4FF] px-2 py-1 rounded-full glass"
-                  style={{ top: "50%", left: "50%", transform: `rotate(${i * 90}deg) translate(190px) rotate(-${i * 90}deg)` }}>
-                  {t.toUpperCase()}
-                </div>
-              ))}
+          <motion.div
+            className="relative w-[220px] sm:w-[300px] lg:w-[360px] aspect-square"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            {/* Gradient glow behind image */}
+            <div className="absolute -inset-6 rounded-full blur-3xl opacity-30 pointer-events-none"
+              style={{ background: "radial-gradient(closest-side, rgba(0,212,255,0.12), rgba(138,43,226,0.08), rgba(0,255,136,0.06))" }} />
+
+            {/* Gradient ring */}
+            <motion.div whileHover={{ scale: 1.03 }} className="relative w-full h-full rounded-full p-[6px]"
+              style={{
+                background: "conic-gradient(from 0deg, #00D4FF, #8A2BE2, #00FF88, #00D4FF)",
+                boxShadow: "0 8px 30px rgba(0,212,255,0.08), inset 0 0 30px rgba(255,255,255,0.02)",
+                borderRadius: "9999px",
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 24 }}
+            >
+              <div className="absolute inset-0 rounded-full overflow-hidden glass-strong border border-white/10">
+                <img
+                  src="/portfolio img.jpeg"
+                  alt={PROFILE.name}
+                  loading="eager"
+                  decoding="async"
+                  className="w-full h-full object-cover object-center"
+                  style={{ imageRendering: "auto", objectPosition: "50% 38%" }}
+                />
+                {/* subtle inner glow */}
+                <div className="absolute inset-0 rounded-full pointer-events-none"
+                  style={{ boxShadow: "inset 0 0 28px rgba(0,212,255,0.06), inset 0 0 40px rgba(138,43,226,0.04)" }} />
+              </div>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
